@@ -8,7 +8,7 @@ export default defineConfig({
   plugins: [dts()],
   build: {
     lib: {
-      entry: resolve(__dirname, "src/tower.ts"),
+      entry: resolve(__dirname, "src/index.ts"),
       name: "tower-fetch",
       fileName: "index"
     }

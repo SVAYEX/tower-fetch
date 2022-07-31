@@ -18,7 +18,7 @@ export type HTTPMethod =
 export type RequestData = FormData | object | null;
 export type RequestOptions = RequestInit & { responseAs?: ResponseType };
 
-export interface FetchError<TBody = unknown> extends Error {
+export interface FetchError<TBody = any> extends Error {
   response: Response;
   body: TBody;
 }
@@ -31,7 +31,7 @@ export interface RequestInstance {
   rateOnlySuccess?: boolean;
   data?: RequestData | (() => RequestData);
   then?: <T = unknown>(response: T) => void;
-  catch?: <T = unknown>(error: FetchError<T>) => void;
+  catch?: <T = any>(error: FetchError<T>) => void;
   rateLimitHadler?: (remainingTime: number) => void;
 }
 

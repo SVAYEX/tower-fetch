@@ -1,38 +1,36 @@
 # Tower fetch
 
-Simple and easy-to-use [fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) wrapper
+Простая и лёгкая обёртка над [fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API).
 
-Other languages: [Russian](https://github.com/SVAYEX/tower-fetch/tree/master/langs/ru.md)
-
-## Instalation
+## Установка
 
 ```sh
 npm i tower-fetch
 ```
 
-## Usage
+## Использавание
 
-Basic usage:
+Базовый сценарий:
 
 ```js
 import { tower } from "tower-fetch";
 
-// Root instance
+// Базовый инстанс
 const $api = tower("https://my-api.com", {
   mode: "cors",
   credentials: "include"
 });
 
-// User creating
+// Создание пользователя
 $api.post("/users", { name: "Luka", login: "SX3" });
 
-// Getting a user
+// Получить пользователя
 $api.get("/users/1").then(user => {
   // ...
 });
 ```
 
-### Extension of the instance
+### Наращивание
 
 ```js
 const $api = tower("https://my-api.com", {
@@ -42,14 +40,14 @@ const $api = tower("https://my-api.com", {
 
 const $users = $api.up("users"); // https://my-api.com/users
 
-// Post
+// Создать
 $users.post({ name: "Luka", login: "SX3" });
 
-// Get
+// Получить
 $users.get("1");
 ```
 
-### Unlimited extension
+Наращивать можно до бесконечности:
 
 ```js
 const $base = tower("https://my-api.com");
@@ -61,37 +59,37 @@ const $two = $one.up("two"); // https://my-api.com/one/two
 const $three = $two.up("three"); // https://my-api.com/one/two/three
 ```
 
-### Data format
+### Формат возвращаемых данных
 
-Default, Tower parses data as JSON but you can configure it using `responseAs`:
+По умолчанию Tower парсит данные как JSON, но вы можете изменить это указав `responseAs`:
 
 ```js
-// Configuration of type on root instance
+// Смена типа по умолчанию
 const $api = tower("https://my-api.com", {
-  responseAs: "response" // Return Response object
+  responseAs: "response" // Возвратит объект Response
 });
 
-// Extension configuration
+// Смена типа при наращивании
 const $users = $api.up("users", {
   responseAs: "json"
 });
 
-// Change type of one request
+// Смена типа для одного запроса
 $users.get("1", {
   responseAs: "text"
 });
 ```
 
-Available data formats:
+Доступные типы данных:
 
-- `json` - by default.
+- `json` - по умолчанию.
 - `text`
 - `blob`
 - `arrayBuffer`
 - `formData`
-- `response` - data aren't processed.
+- `response` - данные не будут обрабатываться.
 
-### Request instance
+### Экземпляр запроса
 
 ```js
 const $fetch = tower("https://my-api.com");
@@ -110,32 +108,32 @@ const updateUser = $fetch.request({
     name: "Luka"
   }),
 
-  // Succeed request
+  // Успешный запрос
   then: user => {
     // ...
   },
 
-  // Handling an error
+  // Ошибка
   catch: error => {
     // ...
   },
 
-  // Speed limit in ms
+  // Ограничение скорости в ms
   rateLimit: 60000,
 
-  // Counting only succeed requests
+  // Считать только успешные запросы
   rateOnlySuccess: true,
 
-  // Handle rate limin
+  // Обработчик при превешении лимита
   rateLimitHadler: remainingTime => {
     console.warn(`Please wait ${Math.round(remainingTime / 1000)} seconds`);
   }
 
   options: {
-    // Request options
+    // Опции запроса
   }
 });
 
-// You can assign to pressing button
+// Можно назначить на нажатие кнопки
 updateUser()
 ```

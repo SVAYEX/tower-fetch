@@ -1,4 +1,4 @@
-import { tower } from "./src";
+import { tower, merge } from "./src";
 
 export default {};
 

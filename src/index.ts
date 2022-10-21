@@ -75,8 +75,40 @@ export const defaults: RequestOptions = {
   responseAs: "json"
 };
 
-function normalizeUrl(url: string) {
+export function normalizeUrl(url: string) {
   return url.slice(0, 7) + "/" + url.slice(7).replaceAll("//", "/");
+}
+
+export function isObject(v: any) {
+  return v && typeof v === "object" && !Array.isArray(v);
+}
+
+export function merge<T = any>(...objects: any[]): T {
+  let result = {};
+
+  for (const object of objects) {
+    for (const key in object) {
+      //@ts-ignore
+      if (!result[key]) {
+        //@ts-ignore
+        result[key] = object[key];
+        continue;
+      }
+
+      //@ts-ignore
+      if (isObject(object[key]) && isObject(result[key])) {
+        //@ts-ignore
+        result[key] = merge(result[key], object[key]);
+        continue;
+      } else {
+        //@ts-ignore
+        result[key] = object[key];
+      }
+    }
+  }
+
+  //@ts-ignore
+  return result;
 }
 
 export function tower(
@@ -92,12 +124,12 @@ export function tower(
     options =
       typeof urlOrData !== "string" && dataOrOptions ? dataOrOptions : options;
 
-    let mergedOptions: RequestOptions = {
-      ...defaults,
-      ...instanceOptions,
-      ...options,
-      method
-    };
+    let mergedOptions: RequestOptions = merge(
+      defaults,
+      instanceOptions,
+      options,
+      { method }
+    );
 
     const url =
       typeof urlOrData === "string"
@@ -112,8 +144,7 @@ export function tower(
         data instanceof FormData ? data : JSON.stringify(data);
     }
 
-    console.log(mergedOptions);
-
+    // FETCH!!!
     const response = await fetch(url, mergedOptions);
 
     const responseData =

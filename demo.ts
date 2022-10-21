@@ -33,13 +33,18 @@ const $updateUser = $fetch.request({
   }
 });
 
-btn.addEventListener("click", async () => {
-  const result = await Promise.all([
+function requestPack() {
+  return Promise.all([
     $posts.get("1"),
     $posts.post({ body: "Losos" }),
     $posts.patch("1", { body: "Losos" }),
     $updateUser()
   ]);
+}
 
+btn.addEventListener("click", async () => {
+  let result = await requestPack();
+  console.log(result);
+  result = await requestPack();
   console.log(result);
 });

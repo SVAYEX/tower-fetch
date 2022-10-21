@@ -16,7 +16,9 @@ export type HTTPMethod =
   | "OPTIONS";
 
 export type RequestData = FormData | object | null;
-export type RequestOptions = RequestInit & { responseAs?: ResponseType };
+export type RequestOptions = RequestInit & {
+  responseAs?: ResponseType;
+};
 
 export interface FetchError<TBody = any> extends Error {
   response: Response;
@@ -61,6 +63,8 @@ export interface FetchInstance {
   up(url: string, upOptions?: RequestOptions): FetchInstance;
 
   request<T = unknown>(options: RequestInstance): () => Promise<T> | undefined;
+
+  options: RequestOptions;
 }
 
 export const defaults: RequestOptions = {
@@ -108,6 +112,8 @@ export function tower(
         data instanceof FormData ? data : JSON.stringify(data);
     }
 
+    console.log(mergedOptions);
+
     const response = await fetch(url, mergedOptions);
 
     const responseData =
@@ -144,6 +150,8 @@ export function tower(
         ...upOptions
       });
     },
+
+    options: instanceOptions,
 
     request(options: RequestInstance) {
       const inst = async () => {

@@ -1,4 +1,4 @@
-import { tower, merge } from "./src";
+import { Tower } from "./src/class";
 
 export default {};
 
@@ -8,43 +8,29 @@ const btn = document.createElement("button");
 btn.textContent = "Simple requests!";
 app.appendChild(btn);
 
-const $fetch = tower("https://jsonplaceholder.typicode.com");
+const $fetch = new Tower("https://jsonplaceholder.typicode.com");
 
 //const $todos = $fetch.up("/todos");
 const $posts = $fetch.up("/posts");
 
 const userId = 1;
 
-const $updateUser = $fetch.request({
-  url: () => `/users/${userId}`,
-  method: "PATCH",
-  data: () => ({
-    name: "Luka"
-  }),
-  then: () => console.info("Users fetched!"),
-  catch: () => console.log("Failed fetched!"),
-  rateLimit: 60000,
-  rateOnlySuccess: true,
-  rateLimitHadler: remainingTime =>
-    console.warn(`Please wait ${Math.round(remainingTime / 1000)} seconds`),
-  options: {
-    responseAs: "json",
-    mode: "cors"
-  }
-});
-
 function requestPack() {
   return Promise.all([
     $posts.get("1"),
     $posts.post({ body: "Losos" }),
-    $posts.patch("1", { body: "Losos" }),
-    $updateUser()
+    $posts.patch("1", { body: "Losos" })
   ]);
 }
 
 btn.addEventListener("click", async () => {
   let result = await requestPack();
   console.log(result);
+  $posts.edit({
+    headers: {
+      Authorization: "LOSOS"
+    }
+  });
   result = await requestPack();
   console.log(result);
 });

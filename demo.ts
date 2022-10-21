@@ -23,7 +23,7 @@ const $updateUser = $fetch.request({
   }),
   then: () => console.info("Users fetched!"),
   catch: () => console.log("Failed fetched!"),
-  rateLimit: 60000,
+  //rateLimit: 60000,
   rateOnlySuccess: true,
   rateLimitHadler: remainingTime =>
     console.warn(`Please wait ${Math.round(remainingTime / 1000)} seconds`),
@@ -45,6 +45,12 @@ function requestPack() {
 btn.addEventListener("click", async () => {
   let result = await requestPack();
   console.log(result);
+  $posts.edit({
+    headers: {
+      LOSOS: "LOSOS"
+    }
+  });
   result = await requestPack();
   console.log(result);
+  console.log("OPTS: ", $posts.options);
 });

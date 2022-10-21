@@ -59,6 +59,18 @@ const $two = $one.up("two"); // https://my-api.com/one/two
 const $three = $two.up("three"); // https://my-api.com/one/two/three
 ```
 
+### Редктирование
+
+```js
+
+const $base = tower("https://my-api.com");
+
+const $base.edit({ headers: {
+  Authorization: "TOKEN"
+}})
+
+```
+
 ### Формат возвращаемых данных
 
 По умолчанию Tower парсит данные как JSON, но вы можете изменить это указав `responseAs`:

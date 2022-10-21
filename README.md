@@ -58,7 +58,19 @@ const $one = $base.up("one"); // https://my-api.com/one
 
 const $two = $one.up("two"); // https://my-api.com/one/two
 
-const $three = $two.up("three"); // https://my-api.com/one/two/three
+const $three = $two.up("three", { headers: {} }); // https://my-api.com/one/two/three
+```
+
+### Edit instance
+
+```js
+
+const $base = tower("https://my-api.com");
+
+const $base.edit({ headers: {
+  Authorization: "TOKEN"
+}})
+
 ```
 
 ### Data format

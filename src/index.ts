@@ -62,6 +62,8 @@ export interface FetchInstance {
 
   up(url: string, upOptions?: RequestOptions): FetchInstance;
 
+  edit(options: RequestOptions, url?: string): FetchInstance;
+
   request<T = unknown>(options: RequestInstance): () => Promise<T> | undefined;
 
   options: RequestOptions;
@@ -176,10 +178,17 @@ export function tower(
     patch: _fetch.bind(null, "PATCH"),
 
     up(url: string, upOptions?: RequestOptions) {
-      return tower(normalizeUrl(baseURL + "/" + url), {
-        ...instanceOptions,
-        ...upOptions
-      });
+      return tower(
+        normalizeUrl(`${baseURL}/${url}`),
+        merge(instanceOptions, upOptions)
+      );
+    },
+
+    edit(options: RequestOptions, url: string = baseURL) {
+      instanceOptions = merge(instanceOptions, options);
+      baseURL = url;
+      this.options = instanceOptions;
+      return this;
     },
 
     options: instanceOptions,

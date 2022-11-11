@@ -1,6 +1,6 @@
 {
   "name": "tower-fetch",
-  "version": "1.2.6",
+  "version": "1.2.7",
   "description": "Easy fetch wrapper",
   "type": "module",
   "types": "./dist/src/index.d.ts",
@@ -15,7 +15,7 @@
   "files": [
     "dist/*.js",
     "dist/*.cjs",
-    "dist/src/*.d.ts"
+    "dist/*.d.ts"
   ],
   "scripts": {
     "dev": "vite",

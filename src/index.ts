@@ -65,8 +65,6 @@ export interface FetchInstance {
   edit(options: RequestOptions, url?: string): FetchInstance;
 
   request<T = unknown>(options: RequestInstance): () => Promise<T> | undefined;
-
-  options: RequestOptions;
 }
 
 export const defaults: RequestOptions = {
@@ -77,8 +75,8 @@ export const defaults: RequestOptions = {
   responseAs: "json"
 };
 
-export function normalizeUrl(url: string) {
-  return url.slice(0, 7) + "/" + url.slice(7).replaceAll("//", "/");
+export function normalizeURL(url: string) {
+  return url.replace(/(https?:\/\/)|(\/)+/g, "$1$2");
 }
 
 export function isObject(v: any) {
@@ -135,7 +133,7 @@ export function tower(
 
     const url =
       typeof urlOrData === "string"
-        ? normalizeUrl(baseURL + "/" + urlOrData)
+        ? normalizeURL(baseURL + "/" + urlOrData)
         : baseURL;
 
     const data = typeof urlOrData !== "string" ? urlOrData : dataOrOptions;
@@ -179,7 +177,7 @@ export function tower(
 
     up(url: string, upOptions?: RequestOptions) {
       return tower(
-        normalizeUrl(`${baseURL}/${url}`),
+        normalizeURL(`${baseURL}/${url}`),
         merge(instanceOptions, upOptions)
       );
     },
@@ -187,11 +185,8 @@ export function tower(
     edit(options: RequestOptions, url: string = baseURL) {
       instanceOptions = merge(instanceOptions, options);
       baseURL = url;
-      this.options = instanceOptions;
       return this;
     },
-
-    options: instanceOptions,
 
     request(options: RequestInstance) {
       const inst = async () => {

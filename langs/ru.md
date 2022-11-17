@@ -67,9 +67,21 @@ const $base = tower("https://my-api.com");
 
 const $base.edit({ headers: {
   Authorization: "TOKEN"
-}})
+}}, 'https://new-api.com')
 
 ```
+
+### Удаление заголовков
+
+````js
+const $base = tower("https://my-api.com");
+
+// Заголовок будет удалён
+$base.post("/files", {
+  headers: {
+    "Content-Type": null
+  }
+});
 
 ### Формат возвращаемых данных
 
@@ -90,7 +102,7 @@ const $users = $api.up("users", {
 $users.get("1", {
   responseAs: "text"
 });
-```
+````
 
 Доступные типы данных:
 

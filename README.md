@@ -69,8 +69,21 @@ const $base = tower("https://my-api.com");
 
 const $base.edit({ headers: {
   Authorization: "TOKEN"
-}})
+}}, 'https://new-api.com')
 
+```
+
+### Remove header
+
+```js
+const $base = tower("https://my-api.com");
+
+// The content type header will be removed
+$base.post("/files", {
+  headers: {
+    "Content-Type": null
+  }
+});
 ```
 
 ### Data format

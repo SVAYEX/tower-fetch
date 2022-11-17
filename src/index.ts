@@ -113,6 +113,20 @@ export function merge<T = any>(...objects: any[]): T {
   return result;
 }
 
+export function filterHeaders(
+  v: HeadersInit | undefined
+): HeadersInit | undefined {
+  const result = {};
+  for (const key in v) {
+    //@ts-ignore
+    if (v[key] !== null) {
+      //@ts-ignore
+      result[key] = v[key];
+    }
+  }
+  return result;
+}
+
 export function tower(
   baseURL: string,
   instanceOptions: RequestOptions = defaults
@@ -133,9 +147,12 @@ export function tower(
       { method }
     );
 
+    // Remove headers with null values
+    mergedOptions.headers = filterHeaders(mergedOptions.headers);
+
     const url =
       typeof urlOrData === "string"
-        ? normalizeURL(baseURL + "/" + urlOrData)
+        ? normalizeURL(`${baseURL}/${urlOrData}`)
         : baseURL;
 
     const data = typeof urlOrData !== "string" ? urlOrData : dataOrOptions;

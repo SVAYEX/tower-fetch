@@ -79,8 +79,10 @@ export function normalizeURL(url: string) {
   return url.replace(/(https?:\/\/)|(\/)+/g, "$1$2");
 }
 
-export function isObject(v: any) {
-  return v && typeof v === "object" && !Array.isArray(v);
+export function isObject(v: any): v is object {
+  return (
+    v && typeof v === "object" && !Array.isArray(v) && !(v instanceof FormData)
+  );
 }
 
 export function merge<T = any>(...objects: any[]): T {
@@ -140,8 +142,7 @@ export function tower(
     const responseAs: ResponseType = mergedOptions.responseAs as ResponseType;
 
     if (data) {
-      mergedOptions.body =
-        data instanceof FormData ? data : JSON.stringify(data);
+      mergedOptions.body = isObject(data) ? JSON.stringify(data) : data;
     }
 
     // FETCH!!!

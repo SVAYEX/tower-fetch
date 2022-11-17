@@ -16,7 +16,8 @@ export type HTTPMethod =
   | "OPTIONS";
 
 export type RequestData = FormData | object | null;
-export type RequestOptions = RequestInit & {
+export type RequestOptions = Omit<RequestInit, "headers"> & {
+  headers?: Record<string, string | null>;
   responseAs?: ResponseType;
 };
 
@@ -114,8 +115,8 @@ export function merge<T = any>(...objects: any[]): T {
 }
 
 export function filterHeaders(
-  v: HeadersInit | undefined
-): HeadersInit | undefined {
+  v: Record<string, string | null> | undefined
+): Record<string, string | null> | undefined {
   const result = {};
   for (const key in v) {
     //@ts-ignore
@@ -162,7 +163,7 @@ export function tower(
       mergedOptions.body = isObject(data) ? JSON.stringify(data) : data;
     }
 
-    // FETCH!!!
+    //@ts-ignore
     const response = await fetch(url, mergedOptions);
 
     const responseData =

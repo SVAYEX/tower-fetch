@@ -1,6 +1,6 @@
 {
   "name": "tower-fetch",
-  "version": "1.4.3",
+  "version": "1.4.4",
   "description": "Easy fetch wrapper",
   "type": "module",
   "types": "./dist/index.d.ts",

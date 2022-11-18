@@ -59,7 +59,11 @@ export interface FetchInstance {
     options?: RequestOptions
   ): Promise<T>;
 
-  delete<T = unknown>(url: string, options?: RequestOptions): Promise<T>;
+  delete<T = unknown>(
+    url: string,
+    dataOrOptions?: RequestData | RequestOptions,
+    options?: RequestOptions
+  ): Promise<T>;
 
   up(url: string, upOptions?: RequestOptions): FetchInstance;
 
@@ -185,8 +189,7 @@ export function tower(
     get: (url: string, options?: RequestOptions) =>
       _fetch("GET", url, null, options),
 
-    delete: (url: string, options?: RequestOptions, data?: RequestData) =>
-      _fetch("DELETE", url, data, options),
+    delete: _fetch.bind(null, "DELETE"),
 
     post: _fetch.bind(null, "POST"),
 

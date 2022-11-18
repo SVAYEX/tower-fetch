@@ -185,8 +185,8 @@ export function tower(
     get: (url: string, options?: RequestOptions) =>
       _fetch("GET", url, null, options),
 
-    delete: (url: string, options?: RequestOptions) =>
-      _fetch("DELETE", url, null, options),
+    delete: (url: string, options?: RequestOptions, data?: RequestData) =>
+      _fetch("DELETE", url, data, options),
 
     post: _fetch.bind(null, "POST"),
 

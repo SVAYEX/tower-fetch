@@ -21,9 +21,16 @@ export type RequestOptions = Omit<RequestInit, "headers"> & {
   responseAs?: ResponseType;
 };
 
-export interface FetchError<TBody = any> extends Error {
+export class FetchError<TBody = any> extends Error {
   response: Response;
   body: TBody;
+
+  constructor(message: string, response: Response, body: TBody) {
+    super(message);
+    this.response = response;
+    this.body = body;
+    Object.setPrototypeOf(this, FetchError.prototype);
+  }
 }
 
 export interface RequestInstance {
@@ -179,10 +186,7 @@ export function tower(
       return responseData;
     }
 
-    const error = new Error(response.statusText) as FetchError;
-    error.response = response;
-    error.body = responseData;
-    throw error;
+    throw new FetchError(response.statusText, response, responseData);
   }
 
   return {
